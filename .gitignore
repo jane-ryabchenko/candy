@@ -1,4 +1,19 @@
+<<<<<<< HEAD
 .DS_Store
 .idea
 *.iml
 target
+=======
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
+!/.mvn/wrapper/maven-wrapper.jar
+>>>>>>> ec7f38f61c13dd55523fb0dfaf47dc9525600612
