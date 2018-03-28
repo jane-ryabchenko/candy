@@ -31,8 +31,10 @@ public class ScreenshotCaptorTest {
   private static final byte[] SCREENSHOT1 = new byte[1];
   private static final byte[] SCREENSHOT2 = new byte[2];
   private static final String ACTUAL_FILE = "actual/testMethod_wholePage.png";
+  private static final String ACTUAL_INFO = "1280x1080";
   private static final String ORIGIN_FILE = "origin/testMethod_wholePage.png";
-  private static final ImageDiff DIFF = new ImageDiff(ACTUAL_FILE, ORIGIN_FILE, 21d);
+  private static final String ORIGIN_INFO = "1276x1080";
+  private static final ImageDiff DIFF = new ImageDiff(ACTUAL_FILE, ACTUAL_INFO, ORIGIN_FILE, ORIGIN_INFO, 21d);
 
   @Mock FirefoxDriver driver;
   @Mock WebElement targetElement;
@@ -42,6 +44,8 @@ public class ScreenshotCaptorTest {
 
   @Before
   public void before() {
+    GlobalContext.setOriginFolder("origin");
+    GlobalContext.setActualFolder("actual");
     captor = Mockito.spy(new ScreenshotCaptor(driver));
     captor.initCaptor(PREFIX);
     doNothing().when(captor).writeFile(any(byte[].class), anyString(), anyString());

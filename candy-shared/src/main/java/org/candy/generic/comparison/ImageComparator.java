@@ -16,14 +16,14 @@ public abstract class ImageComparator {
     BufferedImage actual = null;
     BufferedImage origin = null;
 
-    String actualInfo = actualFileName;
-    String originInfo = originFileName;
+    String actualInfo = "";
+    String originInfo = "";
     try {
       actual = readImage(actualFileName);
       actualInfo = actual.getWidth() + "x" + actual.getHeight();
 
       origin = readImage(originFileName);
-      originInfo += " " + origin.getWidth() + "x" + origin.getHeight();
+      originInfo = origin.getWidth() + "x" + origin.getHeight();
     } catch (FileNotFoundException ex) {
       if (actual == null) {
         throw new CandyException("Actual screenshot file not found.", ex);
@@ -33,7 +33,7 @@ public abstract class ImageComparator {
     }
 
     double diffPercentage = compare(actual, origin);
-    return new ImageDiff(actualInfo, originInfo, diffPercentage);
+    return new ImageDiff(actualFileName, actualInfo, originFileName, originInfo, diffPercentage);
   }
 
   @VisibleForTesting

@@ -10,6 +10,7 @@
   <modules>
     <module>candy-framework</module>
     <module>candy-shared</module>
+    <module>candy-test</module>
   </modules>
 
   <packaging>pom</packaging>
