@@ -1,10 +1,13 @@
 package org.candy;
 
+import com.google.common.annotations.VisibleForTesting;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.candy.annotation.ShouldFail;
 import org.candy.generic.CandyException;
 import org.candy.generic.comparison.ImageDiff;
+import org.candy.report.TestReport;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.junit.runners.model.MultipleFailureException;
@@ -32,14 +35,18 @@ public class CandyTestWatcher extends TestWatcher {
 
         base.evaluate();
 
+        TestReport report = new TestReport(description);
         List<Throwable> failedScreenshotExceptions = new ArrayList<>();
         for (ImageDiff diff : captor.getImageDiffs()) {
           try {
+            report.addComparison(diff);
             diff.verify();
           } catch (CandyException ex) {
             failedScreenshotExceptions.add(ex);
           }
         }
+        writeReport(report, description.getClassName() + "_" + description.getMethodName() + ".xml");
+
         boolean shouldFail = description.getAnnotation(ShouldFail.class) != null;
         if (shouldFail && failedScreenshotExceptions.isEmpty()) {
           throw new CandyException("Test method " + description.getDisplayName() + " was expected to fail.");
@@ -49,5 +56,10 @@ public class CandyTestWatcher extends TestWatcher {
       }
     };
     return super.apply(statement, description);
+  }
+
+  @VisibleForTesting
+  void writeReport(TestReport report, String fileName) {
+    report.writeReport(new File(GlobalContext.getActualFoider() + "/" + fileName));
   }
 }

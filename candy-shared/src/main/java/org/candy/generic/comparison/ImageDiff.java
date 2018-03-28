@@ -11,18 +11,25 @@ public class ImageDiff {
   private double diffPercentage;
   private String actualFileName;
   private String originFileName;
+  private String actualInfo;
+  private String originInfo;
   private ImageComparisonException exception;
 
-  public ImageDiff(String actualFileName, String originFileName, double diffPercentage) {
+  public ImageDiff(
+      String actualFileName, String actualInfo, String originFileName, String originInfo, double diffPercentage) {
     this.actualFileName = checkNotNull(actualFileName);
     this.originFileName = checkNotNull(originFileName);
+    this.actualInfo = actualInfo;
+    this.originInfo = originInfo;
     this.diffPercentage = diffPercentage;
     if (isFailed()) {
       String message = String.format(
-          "Image difference is %.2f%%\nOrigin: %s\nActual: %s",
+          "Image difference is %.2f%%\nOrigin: %s %s\nActual: %s %s",
           getDiffPercentage(),
           getOriginFileName(),
-          getActualFileName());
+          getOriginInfo(),
+          getActualFileName(),
+          getActualInfo());
       exception = new ImageComparisonException(message);
     }
   }
@@ -50,5 +57,13 @@ public class ImageDiff {
 
   public String getOriginFileName() {
     return originFileName;
+  }
+
+  public String getOriginInfo() {
+    return originInfo;
+  }
+
+  public String getActualInfo() {
+    return actualInfo;
   }
 }

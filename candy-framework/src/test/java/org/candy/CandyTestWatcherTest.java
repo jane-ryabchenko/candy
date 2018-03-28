@@ -7,6 +7,7 @@ import org.candy.annotation.ShouldFail;
 import org.candy.generic.CandyException;
 import org.candy.generic.comparison.ImageComparisonException;
 import org.candy.generic.comparison.ImageDiff;
+import org.candy.report.TestReport;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.Description;
@@ -19,6 +20,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.candy.generic.test.TestUtils.assertThrows;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -29,13 +34,16 @@ import static org.mockito.Mockito.when;
 public class CandyTestWatcherTest {
   private final static String METHOD_NAME = "testMethod";
   private final static String METHOD_DISPLAY_NAME = "testMethod(FooTest)";
-  private static final String ACTUAL_FILE = "Actual";
-  private static final String ORIGIN_FILE = "Origin";
-  private static final String EXPECTED_DIFF_MSG = "Image difference is 21.00%\nOrigin: Origin\nActual: Actual";
+  private static final String ACTUAL_FILE = "ActualFile";
+  private static final String ACTUAL_INFO = "ActualInfo";
+  private static final String ORIGIN_FILE = "OriginFile";
+  private static final String ORIGIN_INFO = "OriginInfo";
+  private static final String EXPECTED_DIFF_MSG = "Image difference is 21.00%\nOrigin: OriginFile OriginInfo\n" +
+      "Actual: ActualFile ActualInfo";
   private static final String EXPECTED_CANDY_MSG = "Test method testMethod(FooTest) was expected to fail.";
   private static final String EXPECTED_MESSAGE = "There were 1 errors:\n  " +
       "org.candy.generic.comparison.ImageComparisonException(Image difference is 21.00%\n" +
-      "Origin: Origin\nActual: Actual)";
+      "Origin: OriginFile OriginInfo\nActual: ActualFile ActualInfo)";
 
   @Mock ScreenshotCaptor captor;
   @Mock Statement statement;
@@ -45,8 +53,9 @@ public class CandyTestWatcherTest {
 
   @Before
   public void before() {
-    watcher = new CandyTestWatcher(captor);
+    watcher = spy(new CandyTestWatcher(captor));
 
+    doNothing().when(watcher).writeReport(any(TestReport.class), anyString());
     when(description.getAnnotation(ShouldFail.class)).thenReturn(new ShouldFail() {
       @Override
       public Class<? extends Annotation> annotationType() {
@@ -55,12 +64,14 @@ public class CandyTestWatcherTest {
     });
     when(description.getMethodName()).thenReturn(METHOD_NAME);
     when(description.getDisplayName()).thenReturn(METHOD_DISPLAY_NAME);
-    when(captor.getImageDiffs()).thenReturn(ImmutableList.of(new ImageDiff(ACTUAL_FILE, ORIGIN_FILE, 21d)));
+    when(captor.getImageDiffs()).thenReturn(
+        ImmutableList.of(new ImageDiff(ACTUAL_FILE, ACTUAL_INFO, ORIGIN_FILE, ORIGIN_INFO, 21d)));
   }
 
   @Test
   public void testApplyShouldNotFailNoDiffs() throws Throwable {
-    when(captor.getImageDiffs()).thenReturn(ImmutableList.of(new ImageDiff(ACTUAL_FILE, ORIGIN_FILE, 0d)));
+    when(captor.getImageDiffs()).thenReturn(
+        ImmutableList.of(new ImageDiff(ACTUAL_FILE, ACTUAL_INFO, ORIGIN_FILE, ORIGIN_INFO, 0d)));
     when(description.getAnnotation(ShouldFail.class)).thenReturn(null);
 
     watcher.apply(statement, description).evaluate();
@@ -96,7 +107,8 @@ public class CandyTestWatcherTest {
 
   @Test
   public void testApplyShouldFailNoDiffs() throws Throwable {
-    when(captor.getImageDiffs()).thenReturn(ImmutableList.of(new ImageDiff(ACTUAL_FILE, ORIGIN_FILE, 0d)));
+    when(captor.getImageDiffs()).thenReturn(
+        ImmutableList.of(new ImageDiff(ACTUAL_FILE, ACTUAL_INFO, ORIGIN_FILE, ORIGIN_INFO, 0d)));
 
     assertThrows(CandyException.class, EXPECTED_CANDY_MSG, watcher.apply(statement, description)::evaluate);
 

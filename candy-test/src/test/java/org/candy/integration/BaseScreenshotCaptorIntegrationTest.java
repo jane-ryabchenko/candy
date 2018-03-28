@@ -3,6 +3,7 @@ package org.candy.integration;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
+import org.candy.GlobalContext;
 import org.candy.ScreenshotCaptor;
 import org.junit.After;
 import org.junit.Before;
@@ -20,8 +21,8 @@ public class BaseScreenshotCaptorIntegrationTest {
 
   @Before
   public void before() {
-    System.setProperty("candy.origin.folder", EXPECTED_FOLDER);
-    System.setProperty("candy.actual.folder", OUTPUT_FOLDER);
+    GlobalContext.setOriginFolder(EXPECTED_FOLDER);
+    GlobalContext.setActualFolder(OUTPUT_FOLDER);
     System.setProperty(
         GeckoDriverService.GECKO_DRIVER_EXE_PROPERTY, "src/test/resources/web-driver/geckodriver");
 

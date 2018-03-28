@@ -100,14 +100,14 @@ public class ScreenshotCaptor {
   }
 
   private void captureScreenshot(String name, CaptureStrategy captureStrategy) {
-    int tries = Math.max(Integer.valueOf(System.getProperty("candy.capture.tries", "1")), 1);
+    int tries = GlobalContext.getRetries();
     name = getUniqueName(name);
     ImageDiff diff;
     for (int i = 0; i < tries; i++) {
       byte[] screenshot = captureStrategy.capture();
       String actualFile = writeScreenshot(name, screenshot);
       String originFile =
-          System.getProperty("candy.origin.folder", "origin") + "/" + screenshotPrefix + "_" + name + ".png";
+          GlobalContext.getOriginFolder() + "/" + screenshotPrefix + "_" + name + ".png";
       diff = compare(actualFile, originFile);
       if (!diff.isFailed() || i == tries - 1) {
         imageDiffMap.put(name, diff);
@@ -117,7 +117,7 @@ public class ScreenshotCaptor {
   }
 
   private String writeScreenshot(String name, byte[] screenshot) {
-    String folderName = System.getProperty("candy.actual.folder", "actual");
+    String folderName = GlobalContext.getActualFoider();
     String fileName = folderName + "/" + screenshotPrefix + "_" + name + ".png";
     writeFile(screenshot, fileName, folderName);
     return fileName;
