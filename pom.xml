@@ -9,8 +9,9 @@
   <version>1.0-SNAPSHOT</version>
   <modules>
     <module>candy-framework</module>
-    <module>candy-shared</module>
+    <module>candy-server</module>
     <module>candy-test</module>
+    <module>candy-shared</module>
   </modules>
 
   <packaging>pom</packaging>
