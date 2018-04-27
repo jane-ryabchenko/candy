@@ -7,29 +7,33 @@
 
   </style>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <%--<link href="<c:url value='/static/css/app.css' />" rel="stylesheet"></link>--%>
+  <link href="<c:url value='/static/css/app.css' />" rel="stylesheet"></link>
 </head>
 <body ng-app="candyApp" class="ng-cloak">
 <div class="generic-container" ng-controller="ReportController as ctrl">
   <div class="panel panel-default">
     <!-- Default panel contents -->
     <div class="panel-heading"><span class="lead">Comparison report</span></div>
-    <div class="tablecontainer">
-      <table class="table table-hover">
-        <thead>
-        <tr>
-          <th>Name</th>
-          <th>Diff %</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="comp in ctrl.report.comparisonList">
-          <td><span ng-bind="comp.name"></span></td>
-          <td><span ng-bind="comp.diffPercentage"></span></td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
+    <%--<div class="tablecontainer">--%>
+      <%--<table class="table table-hover">--%>
+        <%--<thead>--%>
+        <%--<tr>--%>
+          <%--<th>Name</th>--%>
+          <%--<th>Diff %</th>--%>
+        <%--</tr>--%>
+        <%--</thead>--%>
+        <%--<tbody>--%>
+        <%--<tr ng-repeat="comp in ctrl.report.comparisonList">--%>
+          <%--<td><span ng-bind="comp.name"></span></td>--%>
+          <%--<td><span ng-bind="comp.diffPercentage"></span></td>--%>
+        <%--</tr>--%>
+        <%--</tbody>--%>
+      <%--</table>--%>
+    <%--</div>--%>
+      <div ng-repeat="comp in ctrl.report.comparisonList" class="comparison">
+          <div><img ng-src="api/images/{{comp.originImageId}}"/></div>
+          <div><img ng-src="api/images/{{comp.actualImageId}}"/></div>
+      </div>
   </div>
 </div>
 
