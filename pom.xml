@@ -12,6 +12,8 @@
     <module>candy-server</module>
     <module>candy-test</module>
     <module>candy-shared</module>
+    <module>candy-maven-plugin</module>
+    <module>candy-server-shared</module>
   </modules>
 
   <packaging>pom</packaging>

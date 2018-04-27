@@ -17,6 +17,11 @@
       <artifactId>candy-framework</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>1.4.197</version>
+    </dependency>
 
     <!-- https://mvnrepository.com/artifact/com.google.truth/truth -->
     <dependency>
@@ -30,6 +35,30 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.candy</groupId>
+        <artifactId>candy-maven-plugin</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.candy</groupId>
+            <artifactId>candy-server-shared</artifactId>
+            <version>1.0-SNAPSHOT</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <testReportFolder>target/candy-actual</testReportFolder>
+          <uploadURL>http://localhost:8888</uploadURL>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>candy-maven-plugin</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.21.0</version>
@@ -38,6 +67,40 @@
             <exclude>**/*IntegrationTest.java</exclude>
           </excludes>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.tomcat.maven</groupId>
+        <artifactId>tomcat7-maven-plugin</artifactId>
+        <version>2.2</version>
+        <configuration>
+          <path>/</path>
+          <port>8888</port>
+          <warDirectory>${project.build.directory}/../../candy-server/target/candy-server</warDirectory>
+          <warSourceDirectory>${project.build.directory}/../../candy-server/target/candy-server</warSourceDirectory>
+          <ignorePackaging>true</ignorePackaging>
+          <systemProperties>
+            <candy.server.properties>${project.basedir}/src/test/resources/test-application.properties</candy.server.properties>
+          </systemProperties>
+        </configuration>
+        <executions>
+          <execution>
+            <id>start-tomcat</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <fork>true</fork>
+            </configuration>
+          </execution>
+          <execution>
+            <id>stop-tomcat</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>shutdown</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
