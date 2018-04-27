@@ -1,0 +1,15 @@
+.comparison {
+  display: flex;
+  justify-content: space-between;
+}
+
+.comparison div {
+  display: inline-flex;
+  max-width: 50%;
+}
+
+.comparison div img{
+  max-width: 100%;
+  object-fit: contain;
+  object-position: top;
+}

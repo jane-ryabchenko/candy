@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+
+<report>
+  <test-class>org.candy.integration.ScreenshotCaptorIntegrationTest</test-class>
+  <test-method>testScreenshotWithTargetElement</test-method>
+
+  <comparison-list>
+    <comparison>
+      <diff-percentage>21.1</diff-percentage>
+      <actual-file-name>candy-test/target/candy-actual/testCaptureScreenshot_capturedBodyScreenshot.png</actual-file-name>
+      <origin-file-name>candy-test/src/test/resources/candy-origin/testCaptureScreenshot_capturedBodyScreenshot.png</origin-file-name>
+    </comparison>
+  </comparison-list>
+</report>

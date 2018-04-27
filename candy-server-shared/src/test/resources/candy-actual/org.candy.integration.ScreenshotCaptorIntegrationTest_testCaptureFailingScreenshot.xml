@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report>
+  <test-class>org.candy.integration.ScreenshotCaptorIntegrationTest</test-class>
+  <test-method>testCaptureFailingScreenshot</test-method>
+  <comparison-list>
+    <comparison>
+      <diff-percentage>79.38</diff-percentage>
+      <actual-file-name>src/test/resources/candy-actual/testCaptureFailingScreenshot_capturedBodyScreenshot.png</actual-file-name>
+      <actual-file-info>1264x317</actual-file-info>
+      <origin-file-name>src/test/resources/candy-origin/testCaptureFailingScreenshot_capturedBodyScreenshot.png</origin-file-name>
+      <origin-file-info>2770x635</origin-file-info>
+    </comparison>
+  </comparison-list>
+</report>
