@@ -32,16 +32,16 @@ In order to use Candy for visual regression verification for existing Selenium t
 
 1.  Add Candy Framework Maven dependency to the pom.xml 
 ```
-    <dependency>
-	    <groupId>org.candy</groupId>
-	    <artifactId>candy-framework</artifactId>
-	    <version>0.97</version>
-    </dependency>  
+<dependency>
+    <groupId>org.candy</groupId>
+    <artifactId>candy-framework</artifactId>
+    <version>0.97</version>
+</dependency>  
 ```
 
 2.  Add ScreenshotCaptor member variable to the test class to use it within test methods to capture and compare screenshots and pass WebDriver instance to its constructor.  
 ```
-    private ScreenshotCaptor captor = new ScreenshotCaptor(webDriver);  
+private ScreenshotCaptor captor = new ScreenshotCaptor(webDriver);  
 ```    
     
 3.  Add CandyTestWatcher member variable annotated with @Rule and pass previously created instance of ScreenshotCaptor to its constructor.
