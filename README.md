@@ -131,33 +131,33 @@ Candy Server keeps tracking number of uploaded comparison records and compares i
 Find example of the plugin configuration below.
 ```
 <build>
-<plugins>
-...
-<plugin>
-<groupId>org.candy</groupId>
-<artifactId>candy-maven-plugin</artifactId>
-<version>0.97</version>
-<dependencies>
-<dependency>
-<groupId>org.candy</groupId>
-<artifactId>candy-server-shared</artifactId>
-<version>0.97</version>
-</dependency>
-</dependencies>
-<configuration>
-<testReportFolder>target/candy-actual</testReportFolder>
-<uploadURL>CANDY_SERVER_URL</uploadURL>
-</configuration>
-<executions>
-<execution>
-<phase>post-integration-test</phase>
-<goals>
-<goal>cndy-maven-plugin</goal>
-</goals>
-</execution>
-</executions>
-</plugin>
-...
-<plugins>
+	<plugins>
+		...
+		<plugin>
+			<groupId>org.candy</groupId>
+			<artifactId>candy-maven-plugin</artifactId>
+			<version>0.97</version>
+			<dependencies>
+				<dependency>
+					<groupId>org.candy</groupId>
+					<artifactId>candy-server-shared</artifactId>
+					<version>0.97</version>
+				</dependency>
+			</dependencies>
+			<configuration>
+				<testReportFolder>target/candy-actual</testReportFolder>
+				<uploadURL>CANDY_SERVER_URL</uploadURL>
+			</configuration>
+			<executions>
+				<execution>
+					<phase>post-integration-test</phase>
+					<goals>
+						<goal>cndy-maven-plugin</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+		...
+	<plugins>
 <build>
 ```
