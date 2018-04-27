@@ -33,17 +33,17 @@ In order to use Candy for visual regression verification for existing Selenium t
 1.  Add Candy Framework Maven dependency to the pom.xml 
 ```
 <dependency>
-    <groupId>org.candy</groupId>
-    <artifactId>candy-framework</artifactId>
-    <version>0.97</version>
+  <groupId>org.candy</groupId>
+  <artifactId>candy-framework</artifactId>
+  <version>0.97</version>
 </dependency>  
 ```
 
 2.  Add ScreenshotCaptor member variable to the test class to use it within test methods to capture and compare screenshots and pass WebDriver instance to its constructor.  
 ```
 private ScreenshotCaptor captor = new ScreenshotCaptor(webDriver);  
-```    
-    
+```  
+  
 3.  Add CandyTestWatcher member variable annotated with @Rule and pass previously created instance of ScreenshotCaptor to its constructor.
 ```
 @Rule
@@ -57,7 +57,7 @@ GlobalContext.setActualFolder(<path_to_build/actual_folder>);
 ```
 
 5.  Call captor.screenshot(<screenshot_name>) method to capture screenshot in required moment and compare it with corresponding origin screenshot.
-    
+  
 
 ## Implementation
 
@@ -121,43 +121,43 @@ It receives response from Candy Server with unique ID string in its body.
 Then plugin uploads each comparison data iteratively using POST query with multipart/mixed payload. Payload consists of three parts:
 
 1.  JSON with report ID received after initial request and comparison data such as origin screenshot name, actual screenshot name, diff percentage, etc.;
-    
+  
 2.  Actual screenshot PNG image;
-    
+  
 3.  Original screenshot PNG image.
-    
+  
 Candy Server keeps tracking number of uploaded comparison records and compares it with total/expected number of comparisons received in initial request. After upload of last comparison Server marks report as complete.
   
 Find example of the plugin configuration below.
 ```
 <build>
-	<plugins>
-		...
-		<plugin>
-			<groupId>org.candy</groupId>
-			<artifactId>candy-maven-plugin</artifactId>
-			<version>0.97</version>
-			<dependencies>
-				<dependency>
-					<groupId>org.candy</groupId>
-					<artifactId>candy-server-shared</artifactId>
-					<version>0.97</version>
-				</dependency>
-			</dependencies>
-			<configuration>
-				<testReportFolder>target/candy-actual</testReportFolder>
-				<uploadURL>CANDY_SERVER_URL</uploadURL>
-			</configuration>
-			<executions>
-				<execution>
-					<phase>post-integration-test</phase>
-					<goals>
-						<goal>cndy-maven-plugin</goal>
-					</goals>
-				</execution>
-			</executions>
-		</plugin>
-		...
-	<plugins>
+  <plugins>
+    ...
+    <plugin>
+      <groupId>org.candy</groupId>
+      <artifactId>candy-maven-plugin</artifactId>
+      <version>0.97</version>
+      <dependencies>
+        <dependency>
+          <groupId>org.candy</groupId>
+          <artifactId>candy-server-shared</artifactId>
+          <version>0.97</version>
+        </dependency>
+      </dependencies>
+      <configuration>
+        <testReportFolder>target/candy-actual</testReportFolder>
+        <uploadURL>CANDY_SERVER_URL</uploadURL>
+      </configuration>
+      <executions>
+        <execution>
+          <phase>post-integration-test</phase>
+          <goals>
+            <goal>cndy-maven-plugin</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+    ...
+  <plugins>
 <build>
 ```
