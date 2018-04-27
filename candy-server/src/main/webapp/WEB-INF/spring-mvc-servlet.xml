@@ -1,0 +1,68 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+ http://www.springframework.org/schema/beans/spring-beans.xsd
+ http://www.springframework.org/schema/context
+ http://www.springframework.org/schema/context/spring-context.xsd
+ http://www.springframework.org/schema/mvc
+ http://www.springframework.org/schema/mvc/spring-mvc.xsd
+ http://www.springframework.org/schema/tx
+ http://www.springframework.org/schema/tx/spring-tx.xsd
+ http://www.springframework.org/schema/data/jpa
+ http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+  <context:component-scan base-package="org.candy.web, org.candy.service"/>
+
+  <jpa:repositories base-package="org.candy.data"/>
+
+  <tx:annotation-driven/>
+
+  <mvc:annotation-driven/>
+
+  <mvc:resources mapping="/static/css/**" location="/static/css/"/>
+  <mvc:resources mapping="/static/js/**" location="/static/js/"/>
+
+  <context:property-placeholder
+      location="classpath:application.properties, file:///${candy.server.properties}" ignore-unresolvable="true"/>
+
+  <bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <property name="driverClassName" value="${spring.datasource.jdbc.driverClassName}"/>
+    <property name="url" value="${spring.datasource.jdbc.url}"/>
+    <property name="username" value="${spring.datasource.jdbc.username}" />
+    <property name="password" value="${spring.datasource.jdbc.password}" />
+  </bean>
+
+  <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+    <property name="packagesToScan" value="org.candy.data.entity"/>
+    <property name="dataSource" ref="dataSource" />
+
+    <property name="jpaProperties">
+      <props>
+        <prop key="hibernate.show_sql">${spring.datasource.hibernate.show_sql}</prop>
+        <prop key="hibernate.hbm2ddl.auto">${spring.datasource.hibernate.ddl-auto}</prop>
+        <prop key="hibernate.dialect">${spring.datasource.hibernate.dialect}</prop>
+      </props>
+    </property>
+
+    <property name="persistenceProvider">
+      <bean class="org.hibernate.jpa.HibernatePersistenceProvider"/>
+    </property>
+  </bean>
+
+  <bean class="org.springframework.orm.jpa.JpaTransactionManager" id="transactionManager">
+    <property name="dataSource" ref="dataSource" />
+  </bean>
+
+  <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="prefix" value="/pages/"/>
+    <property name="suffix" value=".jsp"/>
+  </bean>
+
+  <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <property name="maxUploadSize" value="10000000"/>
+  </bean>
+</beans>
